@@ -2,6 +2,8 @@ package schwimmer.earthquake.net;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,7 +33,8 @@ import schwimmer.earthquake.EarthquakeProperties;
 public class EarthquakeView extends JFrame //implements WindowListener
 {
 	private static final long serialVersionUID = 6111006689421939040L;
-	private JTextField fields[] = new JTextField[5];
+	private final Timer timer;
+	private JLabel fields[] = new JLabel[5];
 	
 	@Inject
 	public EarthquakeView(EarthquakeController controller)
@@ -44,29 +47,32 @@ public class EarthquakeView extends JFrame //implements WindowListener
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
 		for (int i=0; i<fields.length; i++) {
-			fields[i] = new JTextField();
+			fields[i] = new JLabel();
 			panel.add(fields[i]);
-			fields[i].setEditable(false);
 		}
 		
 		add(panel);
-		
-		controller.refreshData();
+
+		timer = new Timer(30_000, (event) -> controller.refreshData());
+		timer.setInitialDelay(0);
+		timer.start();
 	}
-	
+
+	public void setEarthquakes(List<Earthquake> earthquakes) {
+		for (int i=0; i<fields.length && i<earthquakes.size(); i++) {
+			EarthquakeProperties properties = earthquakes.get(i).getProperties();
+			fields[i].setText(properties.getMag() + " " + properties.getPlace());
+		}
+	}
+
+
 	public static void main(String[] args)
 	{
 		Injector injector = Guice.createInjector(new EarthquakeModule());
 
 		EarthquakeView view = injector.getInstance(EarthquakeView.class);
-			
+
 		view.setVisible(true);
 	}
 
-	public void setEarthquakes(List<Earthquake> earthquakes) {
-		for (int i=0; i<fields.length; i++) {
-			EarthquakeProperties properties = earthquakes.get(i).getProperties();
-			fields[i].setText(properties.getMag() + " " + properties.getPlace());
-		}
-	}
 }

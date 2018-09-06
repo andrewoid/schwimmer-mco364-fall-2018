@@ -30,15 +30,15 @@ public class EarthquakeController {
 	}
 
 	public void refreshData() {
-		service.getAllHour().enqueue(new Callback<EarthquakeFeedModel>() {
+		service.getAllDay().enqueue(new Callback<EarthquakeFeedModel>() {
 			@Override
 			public void onResponse(Call<EarthquakeFeedModel> call, Response<EarthquakeFeedModel> response) {
 				EarthquakeFeedModel feed = response.body();
 
 				List<Earthquake> earthquakes = feed.getFeatures()
 						.stream()
-						.filter(earthquake -> earthquake.getProperties().getMag() >= 1.1)
-						.sorted(Comparator.comparing(Earthquake::getMagnitude).reversed())
+						.filter(earthquake -> earthquake.getProperties().getMag() >= 3.0)
+						.sorted((e1, e2) -> e1.getMagnitude() > e2.getMagnitude() ? -1 : 1)
 						.limit(5)
 						.collect(Collectors.toList());
 
@@ -48,7 +48,7 @@ public class EarthquakeController {
 			}
 
 			@Override
-			public void onFailure(Call<EarthquakeFeedModel> callMonth, Throwable t) {
+			public void onFailure(Call<EarthquakeFeedModel> call, Throwable t) {
 				t.printStackTrace();
 			}
 		});
