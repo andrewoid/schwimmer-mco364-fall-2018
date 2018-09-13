@@ -2,8 +2,7 @@ package schwimmer.earthquake.net;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,7 +32,6 @@ import schwimmer.earthquake.EarthquakeProperties;
 public class EarthquakeView extends JFrame //implements WindowListener
 {
 	private static final long serialVersionUID = 6111006689421939040L;
-	private final Timer timer;
 	private JLabel fields[] = new JLabel[5];
 	
 	@Inject
@@ -53,9 +51,14 @@ public class EarthquakeView extends JFrame //implements WindowListener
 		
 		add(panel);
 
-		timer = new Timer(30_000, (event) -> controller.refreshData());
-		timer.setInitialDelay(0);
-		timer.start();
+		controller.refreshData();
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent windowEvent) {
+				controller.stop();
+			}
+		});
 	}
 
 	public void setEarthquakes(List<Earthquake> earthquakes) {
