@@ -1,11 +1,19 @@
 package schwimmer.maze;
 
+import com.google.common.annotations.VisibleForTesting;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Maze {
 
     private final int width;
     private final int height;
 
-    Cell cells[][];
+    @VisibleForTesting
+    final Cell cells[][];
 
     public Maze(int width, int height) {
         this.width = width;
@@ -24,13 +32,8 @@ public class Maze {
 
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
-                Cell cell = cells[i][j];
-                if (cell.isSouthWall()) {
-                    builder.append("_");
-                }
-                if (cell.isEastWall()) {
-                    builder.append("|");
-                }
+                Cell cell = cells[j][i];
+                builder.append(cell);
             }
             builder.append("\n");
         }
@@ -38,4 +41,46 @@ public class Maze {
         return builder.toString();
     }
 
+    public Cell getCell(int column, int row) {
+        return cells[column][row];
+    }
+
+    public boolean isNotVisited(int column, int row) {
+        return !getCell(column, row).isVisited();
+    }
+
+    @Nullable
+    public Cell getNotVisitedNeighbor(int row, int column) {
+        List<Cell> list = getAllNotVisitedNeighbors(row, column);
+
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        Collections.shuffle(list);
+        return list.get(0);
+    }
+
+    @VisibleForTesting
+    List<Cell> getAllNotVisitedNeighbors(int row, int column) {
+        List<Cell> list = new ArrayList<>();
+
+        // NORTH
+        if ( row > 0 && isNotVisited(column,row-1)) {
+            list.add(getCell(column,row-1));
+        }
+        // SOUTH
+        if (row < height-1 && isNotVisited(column,row+1)) {
+            list.add(getCell(column,row+1));
+        }
+        // WEST
+        if (column > 0 && isNotVisited(column-1, row)) {
+            list.add(getCell(column-1,row));
+        }
+        // EAST
+        if (column < width-1 && isNotVisited(column+1, row)) {
+            list.add(getCell(column+1,row));
+        }
+        return list;
+    }
 }

@@ -1,5 +1,7 @@
 package schwimmer.maze;
 
+import javax.annotation.Nonnull;
+
 public class Cell {
 
     private int x;
@@ -65,5 +67,38 @@ public class Cell {
 
     public void setWestWall(boolean westWall) {
         this.westWall = westWall;
+    }
+
+    public String toString() {
+        return (isSouthWall() ? "_" : " ") +
+                (isEastWall() ? "|" : " ");
+    }
+
+    public void removeWalls(@Nonnull Cell neighbor) {
+
+        if ( x == neighbor.x ) {
+            if ( y == neighbor.y + 1 ) {
+                // SOUTH
+                southWall = false;
+                neighbor.northWall = false;
+            }
+            else if (y == neighbor.y - 1 ) {
+                // NORTH
+                northWall = false;
+                neighbor.southWall = false;
+            }
+        }
+        if ( y == neighbor.y ) {
+            if ( x == neighbor.x + 1 ) {
+                // EAST
+                eastWall = false;
+                neighbor.westWall = false;
+            }
+            else if (x == neighbor.x - 1 ) {
+                westWall = false;
+                neighbor.eastWall = false;
+            }
+        }
+
     }
 }
