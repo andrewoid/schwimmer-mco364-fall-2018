@@ -77,28 +77,31 @@ public class Cell {
     public void removeWalls(@Nonnull Cell neighbor) {
 
         if ( column == neighbor.column) {
-            if ( row == neighbor.row + 1 ) {
+            if ( row == neighbor.row - 1 ) {
                 // SOUTH
                 southWall = false;
                 neighbor.northWall = false;
             }
-            else if (row == neighbor.row - 1 ) {
+            else if (row == neighbor.row + 1 ) {
                 // NORTH
                 northWall = false;
                 neighbor.southWall = false;
             }
         }
-        if ( row == neighbor.row) {
-            if ( column == neighbor.column + 1 ) {
+        else if ( row == neighbor.row) {
+            if ( column == neighbor.column - 1 ) {
                 // EAST
                 eastWall = false;
                 neighbor.westWall = false;
             }
-            else if (column == neighbor.column - 1 ) {
+            else if (column == neighbor.column + 1 ) {
                 // WEST
                 westWall = false;
                 neighbor.eastWall = false;
             }
+        }
+        else {
+            throw new IllegalStateException("Trying to remove walls from cells that aren't neighbors");
         }
 
     }
