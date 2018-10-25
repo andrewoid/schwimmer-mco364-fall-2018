@@ -9,19 +9,19 @@ import java.util.List;
 
 public class Maze {
 
-    private final int width;
-    private final int height;
+    private final int columns;
+    private final int rows;
 
     @VisibleForTesting
     final Cell cells[][];
 
-    public Maze(int width, int height) {
-        this.width = width;
-        this.height = height;
-        cells = new Cell[width][height];
+    public Maze(int columns, int rows) {
+        this.columns = columns;
+        this.rows = rows;
+        cells = new Cell[columns][rows];
 
-        for (int i=0; i<width; i++) {
-            for (int j=0; j<height; j++) {
+        for (int i=0; i<columns; i++) {
+            for (int j=0; j<rows; j++) {
                 cells[i][j] = new Cell(i, j);
             }
         }
@@ -30,8 +30,8 @@ public class Maze {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        for (int i=0; i<width; i++) {
-            for (int j=0; j<height; j++) {
+        for (int i = 0; i< columns; i++) {
+            for (int j = 0; j< rows; j++) {
                 Cell cell = cells[j][i];
                 builder.append(cell);
             }
@@ -70,7 +70,7 @@ public class Maze {
             list.add(getCell(column,row-1));
         }
         // SOUTH
-        if (row < height-1 && isNotVisited(column,row+1)) {
+        if (row < rows -1 && isNotVisited(column,row+1)) {
             list.add(getCell(column,row+1));
         }
         // WEST
@@ -78,7 +78,7 @@ public class Maze {
             list.add(getCell(column-1,row));
         }
         // EAST
-        if (column < width-1 && isNotVisited(column+1, row)) {
+        if (column < columns -1 && isNotVisited(column+1, row)) {
             list.add(getCell(column+1,row));
         }
         return list;

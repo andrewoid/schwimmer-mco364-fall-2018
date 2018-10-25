@@ -4,29 +4,29 @@ import javax.annotation.Nonnull;
 
 public class Cell {
 
-    private int x;
-    private int y;
+    private int column;
+    private int row;
     private boolean visited;
     private boolean northWall;
     private boolean southWall;
     private boolean eastWall;
     private boolean westWall;
 
-    public Cell(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Cell(int column, int row) {
+        this.column = column;
+        this.row = row;
         northWall = true;
         southWall = true;
         eastWall = true;
         westWall = true;
     }
 
-    public int getX() {
-        return x;
+    public int getColumn() {
+        return column;
     }
 
-    public int getY() {
-        return y;
+    public int getRow() {
+        return row;
     }
 
     public boolean isVisited() {
@@ -76,25 +76,26 @@ public class Cell {
 
     public void removeWalls(@Nonnull Cell neighbor) {
 
-        if ( x == neighbor.x ) {
-            if ( y == neighbor.y + 1 ) {
+        if ( column == neighbor.column) {
+            if ( row == neighbor.row + 1 ) {
                 // SOUTH
                 southWall = false;
                 neighbor.northWall = false;
             }
-            else if (y == neighbor.y - 1 ) {
+            else if (row == neighbor.row - 1 ) {
                 // NORTH
                 northWall = false;
                 neighbor.southWall = false;
             }
         }
-        if ( y == neighbor.y ) {
-            if ( x == neighbor.x + 1 ) {
+        if ( row == neighbor.row) {
+            if ( column == neighbor.column + 1 ) {
                 // EAST
                 eastWall = false;
                 neighbor.westWall = false;
             }
-            else if (x == neighbor.x - 1 ) {
+            else if (column == neighbor.column - 1 ) {
+                // WEST
                 westWall = false;
                 neighbor.eastWall = false;
             }
