@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Canvas extends JComponent
         implements MouseMotionListener, MouseListener {
 
-    private final List<List<Point>> lines = new ArrayList<>();
+    private final List<List<Dot>> lines = new ArrayList<>();
 
     public Canvas() {
         this.addMouseListener(this);
@@ -22,11 +22,12 @@ public class Canvas extends JComponent
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        graphics.setColor(Color.RED);
-        for ( List<Point> line : lines ) {
+        for ( List<Dot> line : lines ) {
             for (int i = 1; i < line.size(); i++) {
+                Dot dot = line.get(i);
+                graphics.setColor(dot.color);
                 graphics.drawLine(
-                        line.get(i).x, line.get(i).y,
+                        dot.x, dot.y,
                         line.get(i - 1).x, line.get(i - 1).y);
             }
         }
@@ -35,7 +36,7 @@ public class Canvas extends JComponent
     @Override
     public void mouseDragged(MouseEvent event) {
         lines.get(lines.size()-1)
-                .add(new Point(event.getX(), event.getY()));
+                .add(new Dot(event.getX(), event.getY(), Color.BLACK));
         repaint();
     }
 
