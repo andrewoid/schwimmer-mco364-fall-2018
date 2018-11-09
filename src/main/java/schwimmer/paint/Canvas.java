@@ -12,6 +12,7 @@ public class Canvas extends JComponent
         implements MouseMotionListener, MouseListener {
 
     private final List<List<Dot>> lines = new ArrayList<>();
+    private Color color = Color.BLACK;
 
     public Canvas() {
         this.addMouseListener(this);
@@ -36,7 +37,7 @@ public class Canvas extends JComponent
     @Override
     public void mouseDragged(MouseEvent event) {
         lines.get(lines.size()-1)
-                .add(new Dot(event.getX(), event.getY(), Color.BLACK));
+                .add(new Dot(event.getX(), event.getY(), color));
         repaint();
     }
 
@@ -69,4 +70,13 @@ public class Canvas extends JComponent
     public void mouseExited(MouseEvent mouseEvent) {
 
     }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
 }
