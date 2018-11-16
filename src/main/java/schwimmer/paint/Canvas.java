@@ -11,7 +11,8 @@ import java.util.ArrayList;
 public class Canvas extends JComponent
         implements MouseMotionListener, MouseListener {
 
-    private final List<List<Dot>> lines = new ArrayList<>();
+    private final List<Shape> shapes = new ArrayList<>();
+    private Tool tool = null;
     private Color color = Color.BLACK;
 
     public Canvas() {
@@ -23,21 +24,15 @@ public class Canvas extends JComponent
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        for ( List<Dot> line : lines ) {
-            for (int i = 1; i < line.size(); i++) {
-                Dot dot = line.get(i);
-                graphics.setColor(dot.color);
-                graphics.drawLine(
-                        dot.x, dot.y,
-                        line.get(i - 1).x, line.get(i - 1).y);
-            }
+        for ( Shape shape : shapes ) {
+            shape.paint(graphics);
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent event) {
-        lines.get(lines.size()-1)
-                .add(new Dot(event.getX(), event.getY(), color));
+        tool.onDrag(event.getX(), event.getY());
+
         repaint();
     }
 
@@ -53,7 +48,9 @@ public class Canvas extends JComponent
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-        lines.add(new ArrayList<>());
+        Line line = new Line(color);
+        tool = new PencilTool(line);
+        shapes.add(line);
     }
 
     @Override
