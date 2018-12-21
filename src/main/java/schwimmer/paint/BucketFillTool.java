@@ -3,7 +3,7 @@ package schwimmer.paint;
 import java.awt.*;
 
 public class BucketFillTool implements Tool {
-    private Fill shape;
+    private FillShape shape;
 
     @Override
     public void onDrag(int x, int y) {
@@ -12,7 +12,7 @@ public class BucketFillTool implements Tool {
 
     @Override
     public void onPressed(int x, int y, Color color) {
-        shape = new Fill(new Dot(x,y), color);
+        shape = new FillShape(new Dot(x,y), color);
     }
 
     @Override

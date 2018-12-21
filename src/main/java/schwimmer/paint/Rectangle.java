@@ -1,6 +1,7 @@
 package schwimmer.paint;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Rectangle extends Shape {
 
@@ -26,14 +27,14 @@ public class Rectangle extends Shape {
     }
 
     @Override
-    public void paint(Graphics graphics) {
-        super.paint(graphics);
+    public void paint(BufferedImage image, Graphics imageGraphics) {
+        super.paint(image, imageGraphics);
 
         int xi = Math.min(x1, x2);
         int yi = Math.min(y1, y2);
         int width = Math.abs(x1 - x2);
         int height = Math.abs(y1 - y2);
 
-        graphics.drawRect(xi, yi, width, height);
+        imageGraphics.drawRect(xi, yi, width, height);
     }
 }

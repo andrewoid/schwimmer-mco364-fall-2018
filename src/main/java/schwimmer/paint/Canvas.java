@@ -2,6 +2,7 @@ package schwimmer.paint;
 
 import javax.swing.*;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -14,6 +15,8 @@ public class Canvas extends JComponent
     private final List<Shape> shapes = new ArrayList<>();
     private Color color = Color.BLACK;
     private Tool tool = new PencilTool();
+    private BufferedImage image = new BufferedImage(800, 600,
+            BufferedImage.TYPE_INT_RGB);
 
     public Canvas() {
         this.addMouseListener(this);
@@ -28,13 +31,19 @@ public class Canvas extends JComponent
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
+        Graphics imageGraphics = image.getGraphics();
+        imageGraphics.setColor(Color.WHITE);
+        imageGraphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+
         for ( Shape shape : shapes ) {
-            shape.paint(graphics);
+            shape.paint(image, imageGraphics);
         }
 
         if (tool != null && tool.getShape() != null) {
-            tool.getShape().paint(graphics);
+            tool.getShape().paint(image, imageGraphics);
         }
+
+        graphics.drawImage(image, 0, 0, null);
     }
 
     @Override

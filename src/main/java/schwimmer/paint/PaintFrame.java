@@ -37,7 +37,7 @@ public class PaintFrame extends JFrame {
         });
         north.add(rectangleButton);
 
-        JButton bucketFillButton = new JButton("Bucket Fill");
+        JButton bucketFillButton = new JButton("Bucket FillShape");
         bucketFillButton.addActionListener(listener -> {
             canvas.setTool(new BucketFillTool());
         });

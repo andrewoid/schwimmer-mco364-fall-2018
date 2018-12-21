@@ -1,6 +1,7 @@
 package schwimmer.paint;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public abstract class Shape {
 
@@ -14,7 +15,7 @@ public abstract class Shape {
         return color;
     }
 
-    public void paint(Graphics graphics) {
-        graphics.setColor(color);
+    public void paint(BufferedImage image, Graphics imageGraphics) {
+        imageGraphics.setColor(color);
     }
 }
