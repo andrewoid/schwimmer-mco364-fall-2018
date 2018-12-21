@@ -29,6 +29,11 @@ public class Rectangle extends Shape {
     public void paint(Graphics graphics) {
         super.paint(graphics);
 
-        graphics.drawRect(x1, y1, x2, y2);
+        int xi = Math.min(x1, x2);
+        int yi = Math.min(y1, y2);
+        int width = Math.abs(x1 - x2);
+        int height = Math.abs(y1 - y2);
+
+        graphics.drawRect(xi, yi, width, height);
     }
 }

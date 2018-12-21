@@ -12,8 +12,10 @@ public class PaintFrame extends JFrame {
         setLayout(new BorderLayout());
         add(canvas, BorderLayout.CENTER);
 
+        JPanel north = new JPanel();
+        north.setLayout(new FlowLayout());
+
         JButton changeColorButton = new JButton("Change color");
-        add(changeColorButton, BorderLayout.NORTH);
         changeColorButton.addActionListener( listener -> {
             Color newColor = JColorChooser.showDialog(
                     PaintFrame.this,
@@ -21,6 +23,27 @@ public class PaintFrame extends JFrame {
                     canvas.getColor());
             canvas.setColor(newColor);
         });
+        north.add(changeColorButton);
+
+        JButton pencilButton = new JButton("Pencil");
+        pencilButton.addActionListener(listener -> {
+            canvas.setTool(new PencilTool());
+        });
+        north.add(pencilButton);
+
+        JButton rectangleButton = new JButton("Rectangle");
+        rectangleButton.addActionListener(listener -> {
+            canvas.setTool(new RectangleTool());
+        });
+        north.add(rectangleButton);
+
+        JButton bucketFillButton = new JButton("Bucket Fill");
+        bucketFillButton.addActionListener(listener -> {
+            canvas.setTool(new BucketFillTool());
+        });
+        north.add(bucketFillButton);
+
+        add(north, BorderLayout.NORTH);
 
         setSize(800, 600);
 
